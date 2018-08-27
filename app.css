@@ -1,8 +1,8 @@
 /* 引入内容渲染模块样式 */
 
-@import "wxParser/index.wxss";
+@import "wxParser/index.css";
 
-/**app.wxss**/
+/**app.css**/
 
 .container {
   height: 100%;

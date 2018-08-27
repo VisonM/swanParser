@@ -163,7 +163,7 @@ const codeMap = {
  * @param  {String} str 待转换字符串
  * @return {String}     转换后的字符串
  */
-const transform = (str) => {
+const transform = str => {
   for (let code in codeMap) {
     str = str.replace(new RegExp(code, 'g'), codeMap[code]);
   }
@@ -172,4 +172,4 @@ const transform = (str) => {
 
 module.exports = {
   transform
-}
+};

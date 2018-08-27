@@ -10,7 +10,7 @@ let olTagCount = [];
  * @param  {String} str   HTML 内容
  * @return {String}
  */
-const removeDOCTYPE = (str) => {
+const removeDOCTYPE = str => {
   return str.replace(/<\?xml.*\?>\n/, '').replace(/<.*!doctype.*\>\n/, '').replace(/<.*!DOCTYPE.*\>\n/, '');
 };
 
@@ -38,8 +38,9 @@ const html2json = (html, bindName) => {
    * 把节点放到父节点的 nodes 列表
    * @param  {Object} node 节点对象
    */
-  const putNode2ParentNodeList = (node) => {
-    if (bufferNodes.length === 0) { // 表明关闭此 node 时，不存在任何未关闭标签，也就是不存在父元素，所以直接挂到根节点即可
+  const putNode2ParentNodeList = node => {
+    if (bufferNodes.length === 0) {
+      // 表明关闭此 node 时，不存在任何未关闭标签，也就是不存在父元素，所以直接挂到根节点即可
       results.nodes.push(node);
     } else {
       // 如果节点缓冲区还有节点，子节点会不断的被放到该子节点的父节点下，形成一个嵌套引用的节点对象。
@@ -48,7 +49,7 @@ const html2json = (html, bindName) => {
       if (parent.nodes === undefined) {
         parent.nodes = [];
       }
-      node.parent = parent.tag
+      node.parent = parent.tag;
       parent.nodes.push(node);
     }
   };
@@ -89,8 +90,9 @@ const html2json = (html, bindName) => {
 
       if (attrs.length) {
         node.attr = {};
-        attrs.map((item) => {
-          if (item.name === 'style') { // 对 style 做单独处理，因为后面会根据 tag 添加更多的 style
+        attrs.map(item => {
+          if (item.name === 'style') {
+            // 对 style 做单独处理，因为后面会根据 tag 添加更多的 style
             if (nodeStyles.indexOf(item.value) === -1) {
               nodeStyles.push(item.value);
             }
@@ -114,13 +116,13 @@ const html2json = (html, bindName) => {
       }
 
       if (node.tag == 'ol' || node.tag == 'ul') {
-        olTagCount.push(0)
+        olTagCount.push(0);
       }
 
       if (node.tag == 'li') {
-        let len = olTagCount.length - 1
-        olTagCount[len] = olTagCount[len] + 1
-        node.order = olTagCount[len]
+        let len = olTagCount.length - 1;
+        olTagCount[len] = olTagCount[len] + 1;
+        node.order = olTagCount[len];
       }
 
       // img 标签 添加额外数据
@@ -133,23 +135,23 @@ const html2json = (html, bindName) => {
       }
 
       if (node.tag === 'video' || node.tag === 'audio') {
-        node.attr.controls = !node.attr.controls ? false : true
-        node.attr.autoplay = !node.attr.autoplay ? false : true
-        node.attr.loop = !node.attr.loop ? false : true
+        node.attr.controls = !node.attr.controls ? false : true;
+        node.attr.autoplay = !node.attr.autoplay ? false : true;
+        node.attr.loop = !node.attr.loop ? false : true;
       }
 
       if (node.tag === 'video') {
-        node.attr.muted = !node.attr.muted ? false : true
+        node.attr.muted = !node.attr.muted ? false : true;
       }
 
       if (node.tag === 'audio') {
-        let params = node.attr['data-extra']
+        let params = node.attr['data-extra'];
         if (params) {
-           params = params.replace(new RegExp('&quot;', 'g'), '"');
-           params = JSON.parse(params)
-           node.attr.poster = params.poster
-           node.attr.name = params.name
-           node.attr.author = params.author
+          params = params.replace(new RegExp('&quot;', 'g'), '"');
+          params = JSON.parse(params);
+          node.attr.poster = params.poster;
+          node.attr.name = params.name;
+          node.attr.author = params.author;
         }
       }
 
@@ -174,21 +176,21 @@ const html2json = (html, bindName) => {
       }
 
       if (node.tag == 'ol' || node.tag == 'ul') {
-        olTagCount.pop()
+        olTagCount.pop();
       }
 
       if (node.tag === 'video' || node.tag === 'audio') {
         if (!node.attr.src) {
-          let nodes = node.nodes
-          let len = nodes.length
-          let src = ''
+          let nodes = node.nodes;
+          let len = nodes.length;
+          let src = '';
           for (let i = 0; i < len; i++) {
             if (nodes[i].tag === 'source') {
-              src = nodes[i].attr.src
-              break
+              src = nodes[i].attr.src;
+              break;
             }
           }
-          node.attr.src = src
+          node.attr.src = src;
         }
       }
 
@@ -201,7 +203,7 @@ const html2json = (html, bindName) => {
     text: function (text) {
       let node = {
         node: 'text',
-        text: codeTransformation.transform(text),
+        text: codeTransformation.transform(text)
       };
 
       putNode2ParentNodeList(node);
@@ -210,11 +212,10 @@ const html2json = (html, bindName) => {
      * 处理评论内容
      * @param  {String} content 注释内容
      */
-    comment: function (content) {},
+    comment: function (content) {}
   });
 
   return results;
-
 };
 
 module.exports = {

@@ -20,38 +20,35 @@ const parse = ({ bind = 'wxParserData', html, target, enablePreviewImage = true,
   let bindData = {};
   bindData[bind] = transData;
 
-  that.setData(bindData)
+  that.setData(bindData);
 
   // 加载图片后回调函数
-  that.loadedWxParserImg = (e) => {
-
-  };
+  that.loadedWxParserImg = e => {};
 
   // 点击图片
-  that.tapWxParserImg = (e) => {
+  that.tapWxParserImg = e => {
     if (!enablePreviewImage) {
       return;
     }
     let src = e.target.dataset.src;
     let tagFrom = e.target.dataset.from;
-    if (typeof (tagFrom) !== 'undefined' && tagFrom.length > 0 && bindData[tagFrom]) {
-      wx.previewImage({
+    if (typeof tagFrom !== 'undefined' && tagFrom.length > 0 && bindData[tagFrom]) {
+      swan.previewImage({
         current: src, // 当前显示图片的 http 链接
         urls: bindData[tagFrom].imageUrls // 需要预览的图片 http 链接列表
-      })
+      });
     }
   };
 
   // 点击超链接
   if (Object.prototype.toString.call(tapLink) === '[object Function]') {
-    that.tapWxParserA = (e) => {
+    that.tapWxParserA = e => {
       let href = e.currentTarget.dataset.href;
       tapLink(href);
     };
   }
-
 };
 
 module.exports = {
   parse
-}
+};

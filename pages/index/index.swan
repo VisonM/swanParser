@@ -1,0 +1,6 @@
+<import src="../../wxParser/index.swan" />
+
+<view class="wxParser">
+  <template is="wxParser" data="{{{wxParserData:richText.nodes}}}" />
+</view>
+

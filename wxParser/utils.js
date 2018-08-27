@@ -4,7 +4,7 @@ module.exports = {
    * @param  {String} str 以逗号分隔的字符串
    * @return {Object}     映射表
    */
-  makeMap: (str) => {
+  makeMap: str => {
     let map = {};
     let items = str.split(',');
     for (let i = 0, len = items.length; i < len; i++) {
@@ -43,5 +43,5 @@ module.exports = {
         fontSize = 1;
     }
     return fontSize + 'em';
-  },
-}
+  }
+};

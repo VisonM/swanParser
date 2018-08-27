@@ -24,7 +24,8 @@ const parseHtml = (html, handler) => {
     isText = true;
 
     if (!stack.length || !elements.special[stack.last()]) {
-      if (html.indexOf('<!--') === 0) { // comment
+      if (html.indexOf('<!--') === 0) {
+        // comment
         index = html.indexOf('-->'); // indexOf 会匹配到第一个满足条件的字符位置
         if (index !== -1) {
           if (handler.comment) {
@@ -34,14 +35,16 @@ const parseHtml = (html, handler) => {
           html = html.substring(index + 3);
           isText = false;
         }
-      } else if (html.indexOf('</') === 0) { // end tag
+      } else if (html.indexOf('</') === 0) {
+        // end tag
         match = html.match(endTagReg);
         if (match) {
           html = html.substring(match[0].length);
           match[0].replace(endTagReg, parseEndTag);
           isText = false;
         }
-      } else if (html.indexOf('<') === 0) { // start tag
+      } else if (html.indexOf('<') === 0) {
+        // start tag
         match = html.match(startTagReg);
         if (match) {
           html = html.substring(match[0].length);
@@ -53,8 +56,9 @@ const parseHtml = (html, handler) => {
       // 处理文本内容
       if (isText) {
         index = html.indexOf('<');
-        let text = ''
-        while (index === 0 && !html.match(startTagReg)) { // 处理以 < 开头，但是却不满足 startTagReg 的情况
+        let text = '';
+        while (index === 0 && !html.match(startTagReg)) {
+          // 处理以 < 开头，但是却不满足 startTagReg 的情况
           text += '<';
           html = html.substring(1);
           index = html.indexOf('<');
@@ -66,7 +70,6 @@ const parseHtml = (html, handler) => {
           handler.text(text);
         }
       }
-
     } else {
       html = html.replace(new RegExp("([\\s\\S]*?)<\/" + stack.last() + "[^>]*>"), function (all, text) {
         // 丢弃 special tag 内部的所有内容，包括该 special tag 的闭合标签
@@ -118,12 +121,11 @@ const parseHtml = (html, handler) => {
 
         attrs.push({
           name: name,
-          value: value || '',
+          value: value || ''
         });
       });
 
       handler.start(tagName, attrs, isUnary);
-
     }
   }
 

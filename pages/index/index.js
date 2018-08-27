@@ -13,11 +13,11 @@ Page({
       html: html,
       target: that,
       enablePreviewImage: false,
-      tapLink: (url) => {
-        wx.navigateTo({
+      tapLink: url => {
+        swan.navigateTo({
           url
-        })
+        });
       }
     });
   }
-})
+});
